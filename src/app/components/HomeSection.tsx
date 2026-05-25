@@ -1,0 +1,84 @@
+import { useState } from 'react';
+import { motion, AnimatePresence } from 'motion/react';
+
+const ALGERIAN = "'Algerian', serif";
+const NAV_ITEMS = ['Home', 'Projects', 'Resume', 'Contact'];
+
+
+export function HomeSection() {
+  const [showCard, setShowCard] = useState(false);
+
+  return (
+    <section
+      style={{
+        height: '100vh',
+        width: '100vw',
+        background: '#000',
+        display: 'flex',
+        alignItems: 'stretch',
+        overflow: 'hidden',
+      }}
+    >
+      {/* Card back — flush left */}
+      <img
+        src="/card-back.jpg"
+        alt="card back"
+        style={{
+          height: '100vh',
+          width: 'auto',
+          display: 'block',
+          flexShrink: 0,
+        }}
+      />
+
+      {/* Nav — center */}
+      <div
+        style={{
+          flex: 1,
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          justifyContent: 'center',
+          gap: '2.5rem',
+        }}
+      >
+        {NAV_ITEMS.map(item => (
+          <motion.button
+            key={item}
+            onClick={() => item === 'Home' && setShowCard(true)}
+            whileHover={{ scale: 1.35 }}
+            transition={{ type: 'spring', stiffness: 300, damping: 18 }}
+            style={{
+              fontFamily: ALGERIAN,
+              fontSize: 'clamp(1.2rem, 2.5vw, 2rem)',
+              color: '#fff',
+              background: 'none',
+              border: 'none',
+              cursor: 'pointer',
+              letterSpacing: '0.06em',
+              padding: 0,
+              transformOrigin: 'center',
+            }}
+          >
+            — {item.toUpperCase()}
+          </motion.button>
+        ))}
+      </div>
+
+      {/* Intro card — slides in from right, flush right */}
+      <AnimatePresence>
+        {showCard && (
+          <motion.img
+            src="/Intro_card.jpg"
+            alt="intro card"
+            initial={{ x: '100%' }}
+            animate={{ x: 0 }}
+            exit={{ x: '100%' }}
+            transition={{ duration: 0.7, ease: 'easeOut' }}
+            style={{ height: '100vh', width: 'auto', display: 'block', flexShrink: 0 }}
+          />
+        )}
+      </AnimatePresence>
+    </section>
+  );
+}
