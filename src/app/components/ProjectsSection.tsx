@@ -10,9 +10,21 @@ const PROJECTS = [
     link: 'https://github.com/SuryaM-720s/Threadoku',
   },
   {
+    id: 'paper_keys',
+    src: '/paper_keys.jpg',
+    alt: 'PaperKeys',
+    link: 'https://github.com/joel-koshy/Paper-Piano',
+  },
+  {
     id: 'style_me',
     src: '/style_me.jpg',
     alt: 'Style.me',
+    link: null,
+  },
+  {
+    id: 'diagn_ai',
+    src: '/diagn_ai.jpg',
+    alt: 'DiagnAI',
     link: null,
   },
   {
@@ -21,27 +33,6 @@ const PROJECTS = [
     alt: 'Secret Society',
     link: 'https://github.com/SuryaM-720s/SecretSociety',
   },
-  {
-    id: 'paper_keys',
-    src: '/paper_keys.jpg',
-    alt: 'PaperKeys',
-    link: 'https://github.com/joel-koshy/Paper-Piano',
-  },
-  {
-    id: 'diagn_ai',
-    src: '/diagn_ai.jpg',
-    alt: 'DiagnAI',
-    link: null,
-  },
-];
-
-// Pentagon: top-left, top-center (apex), top-right, bottom-left, bottom-right
-const POSITIONS = [
-  { left: '17%', top: '4%'  }, // Threadoku
-  { left: '50%', top: '0%'  }, // Style.me (apex)
-  { left: '83%', top: '4%'  }, // Secret Society
-  { left: '33%', top: '50%' }, // PaperKeys
-  { left: '67%', top: '50%' }, // DiagnAI
 ];
 
 interface ProjectsSectionProps {
@@ -60,7 +51,10 @@ export function ProjectsSection({ onBack }: ProjectsSectionProps) {
         inset: 0,
         background: '#000',
         zIndex: 50,
-        overflow: 'hidden',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
       }}
     >
       {/* Back button */}
@@ -85,44 +79,47 @@ export function ProjectsSection({ onBack }: ProjectsSectionProps) {
         ← BACK
       </motion.button>
 
-      {/* Pentagon layout */}
-      <div style={{ position: 'relative', width: '100%', height: '100%' }}>
+      {/* Horizontal card row */}
+      <div
+        style={{
+          display: 'flex',
+          flexDirection: 'row',
+          alignItems: 'center',
+          justifyContent: 'center',
+          gap: '1.5vw',
+          padding: '0 2vw',
+          width: '100%',
+          overflowX: 'auto',
+        }}
+      >
         {PROJECTS.map((project, i) => {
-          const pos = POSITIONS[i];
           const imgEl = (
             <motion.img
               key={project.id}
               src={project.src}
               alt={project.alt}
-              initial={{ opacity: 0, scale: 0.7 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.5, delay: 0.15 + i * 0.1, ease: 'easeOut' }}
-              whileHover={{ scale: 1.08 }}
+              initial={{ opacity: 0, y: 40 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.1 + i * 0.1, ease: 'easeOut' }}
+              whileHover={{ scale: 1.05, zIndex: 10 }}
               style={{
                 display: 'block',
-                height: 'clamp(280px, 44vh, 460px)',
+                height: 'clamp(320px, 75vh, 700px)',
                 width: 'auto',
                 borderRadius: '8px',
                 boxShadow: '0 8px 32px rgba(0,0,0,0.8)',
                 cursor: project.link ? 'pointer' : 'default',
+                flexShrink: 0,
               }}
             />
           );
 
-          const wrapperStyle: React.CSSProperties = {
-            position: 'absolute',
-            left: pos.left,
-            top: pos.top,
-            transform: 'translateX(-50%)',
-            zIndex: 1,
-          };
-
           return project.link ? (
-            <a key={project.id} href={project.link} target="_blank" rel="noopener noreferrer" style={wrapperStyle}>
+            <a key={project.id} href={project.link} target="_blank" rel="noopener noreferrer">
               {imgEl}
             </a>
           ) : (
-            <div key={project.id} style={wrapperStyle}>{imgEl}</div>
+            <div key={project.id}>{imgEl}</div>
           );
         })}
       </div>
