@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { ProjectsSection } from './ProjectsSection';
 import { ResumeSection } from './ResumeSection';
+import { ContactSection } from './ContactSection';
 
 const ALGERIAN = "'Algerian', serif";
 const NAV_ITEMS = ['Home', 'Projects', 'Resume', 'Contact'];
@@ -11,6 +12,7 @@ export function HomeSection() {
   const [showCard, setShowCard] = useState(false);
   const [showProjects, setShowProjects] = useState(false);
   const [showResume, setShowResume] = useState(false);
+  const [showContact, setShowContact] = useState(false);
 
   return (
     <>
@@ -54,6 +56,7 @@ export function HomeSection() {
                 if (item === 'Home') setShowCard(true);
                 if (item === 'Projects') setShowProjects(true);
                 if (item === 'Resume') setShowResume(true);
+                if (item === 'Contact') setShowContact(true);
               }}
               whileHover={{ scale: 1.35 }}
               transition={{ type: 'spring', stiffness: 300, damping: 18 }}
@@ -101,6 +104,13 @@ export function HomeSection() {
       <AnimatePresence>
         {showResume && (
           <ResumeSection onBack={() => setShowResume(false)} />
+        )}
+      </AnimatePresence>
+
+      {/* Contact overlay */}
+      <AnimatePresence>
+        {showContact && (
+          <ContactSection onBack={() => setShowContact(false)} />
         )}
       </AnimatePresence>
     </>
