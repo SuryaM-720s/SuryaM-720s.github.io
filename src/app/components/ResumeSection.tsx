@@ -23,7 +23,7 @@ export function ResumeSection({ onBack }: ResumeSectionProps) {
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
-        padding: '4rem 1.5rem 3rem',
+        padding: '1.5rem 1.5rem 2rem',
       }}
     >
       {/* Back button */}
@@ -33,7 +33,7 @@ export function ResumeSection({ onBack }: ResumeSectionProps) {
         transition={{ type: 'spring', stiffness: 300, damping: 18 }}
         style={{
           position: 'fixed',
-          top: '1.5rem',
+          top: '1.2rem',
           left: '2rem',
           fontFamily: ALGERIAN,
           fontSize: 'clamp(0.9rem, 1.5vw, 1.2rem)',
@@ -52,11 +52,12 @@ export function ResumeSection({ onBack }: ResumeSectionProps) {
       <div
         style={{
           width: '100%',
-          maxWidth: '900px',
+          maxWidth: '960px',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'space-between',
-          marginBottom: '1.5rem',
+          marginBottom: '1rem',
+          marginTop: '0.25rem',
           flexWrap: 'wrap',
           gap: '1rem',
         }}
@@ -72,7 +73,7 @@ export function ResumeSection({ onBack }: ResumeSectionProps) {
           Resume
         </div>
 
-        {/* Download button */}
+        {/* Download button — no arrow */}
         <a
           href={RESUME_PATH}
           download="Surya_Prakash_Murugavvel_Resume.pdf"
@@ -96,7 +97,7 @@ export function ResumeSection({ onBack }: ResumeSectionProps) {
             (e.currentTarget as HTMLAnchorElement).style.color = '#FFD700';
           }}
         >
-          ↓ DOWNLOAD
+          DOWNLOAD
         </a>
       </div>
 
@@ -104,18 +105,20 @@ export function ResumeSection({ onBack }: ResumeSectionProps) {
       <div
         style={{
           width: '100%',
-          maxWidth: '900px',
+          maxWidth: '960px',
           height: '1px',
           background: 'linear-gradient(90deg, #FFD700, rgba(255,215,0,0.1))',
-          marginBottom: '2rem',
+          marginBottom: '1rem',
         }}
       />
 
-      {/* PDF Preview */}
+      {/* PDF Preview — fills remaining viewport height */}
       <div
         style={{
           width: '100%',
-          maxWidth: '900px',
+          maxWidth: '960px',
+          flex: 1,
+          minHeight: 0,
           border: '1px solid rgba(255,215,0,0.25)',
           borderRadius: '10px',
           overflow: 'hidden',
@@ -126,11 +129,11 @@ export function ResumeSection({ onBack }: ResumeSectionProps) {
         <object
           data={RESUME_PATH}
           type="application/pdf"
-          style={{ width: '100%', height: '850px', display: 'block', border: 'none' }}
+          style={{ width: '100%', height: 'calc(100vh - 120px)', display: 'block', border: 'none' }}
         >
           <div
             style={{
-              height: '850px',
+              height: '100%',
               display: 'flex',
               flexDirection: 'column',
               alignItems: 'center',
@@ -154,7 +157,7 @@ export function ResumeSection({ onBack }: ResumeSectionProps) {
                 letterSpacing: '0.06em',
               }}
             >
-              ↓ DOWNLOAD
+              DOWNLOAD
             </a>
           </div>
         </object>
