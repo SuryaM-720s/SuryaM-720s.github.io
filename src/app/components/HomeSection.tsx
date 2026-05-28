@@ -54,8 +54,19 @@ function preloadImage(src: string): Promise<void> {
 
 type FlipPhase = 'idle' | 'collapsing' | 'collapsed' | 'expanding';
 
+function useIsMobile() {
+  const [isMobile, setIsMobile] = useState(() => window.innerWidth < 768);
+  useEffect(() => {
+    const handler = () => setIsMobile(window.innerWidth < 768);
+    window.addEventListener('resize', handler);
+    return () => window.removeEventListener('resize', handler);
+  }, []);
+  return isMobile;
+}
+
 export function HomeSection() {
   const sectionRef = useRef<HTMLElement>(null);
+  const isMobile = useIsMobile();
 
   const [showCard, setShowCard] = useState(false);
   const [showProjects, setShowProjects] = useState(false);
@@ -112,9 +123,9 @@ export function HomeSection() {
           scrollSnapAlign: 'start',
         }}
       >
-        {/* Card — scaleX on wrapper, bob on inner img */}
+        {/* Card — hidden on mobile */}
         <motion.div
-          style={{ flexShrink: 0, display: 'flex', cursor: 'pointer' }}
+          style={{ flexShrink: 0, display: isMobile ? 'none' : 'flex', cursor: 'pointer' }}
           animate={{ scaleX: phase === 'collapsing' || phase === 'collapsed' ? 0 : 1 }}
           transition={{ duration: 0.22, ease: phase === 'collapsing' ? 'easeIn' : 'easeOut' }}
           onAnimationComplete={handleAnimationComplete}
@@ -148,7 +159,7 @@ export function HomeSection() {
           {NAV_ITEMS.map((item, i) => (
             <motion.button
               key={item}
-              initial={{ opacity: 0, y: 24 }}
+              initial={isMobile ? { opacity: 1, y: 0 } : { opacity: 0, y: 24 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: false, amount: 0.5 }}
               transition={{ duration: 0.55, delay: i * 0.12, ease: 'easeOut' }}
@@ -158,11 +169,10 @@ export function HomeSection() {
                 if (item === 'Resume') setShowResume(true);
                 if (item === 'Contact') setShowContact(true);
               }}
-              whileHover={{ scale: 1.35, color: '#FFD700' }}
-              transition={{ type: 'spring', stiffness: 600, damping: 20, delay: i * 0.12 }}
+              whileHover={{ scale: 1.35, color: '#FFD700', transition: { type: 'spring', stiffness: 600, damping: 20 } }}
               style={{
                 fontFamily: ALGERIAN,
-                fontSize: 'clamp(1.2rem, 2.5vw, 2rem)',
+                fontSize: isMobile ? 'clamp(1.6rem, 7vw, 2.4rem)' : 'clamp(1.2rem, 2.5vw, 2rem)',
                 color: '#fff',
                 background: 'none',
                 border: 'none',
@@ -177,9 +187,9 @@ export function HomeSection() {
           ))}
         </div>
 
-        {/* Intro card */}
+        {/* Intro card — hidden on mobile */}
         <AnimatePresence>
-          {showCard && (
+          {showCard && !isMobile && (
             <motion.img
               src="/Intro_card.jpg"
               alt="intro card"

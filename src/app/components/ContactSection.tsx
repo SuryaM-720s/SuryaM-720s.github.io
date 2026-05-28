@@ -1,7 +1,17 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion } from 'motion/react';
 
 const ALGERIAN = "'Algerian', serif";
+
+function useIsMobile() {
+  const [isMobile, setIsMobile] = useState(() => window.innerWidth < 768);
+  useEffect(() => {
+    const handler = () => setIsMobile(window.innerWidth < 768);
+    window.addEventListener('resize', handler);
+    return () => window.removeEventListener('resize', handler);
+  }, []);
+  return isMobile;
+}
 const YOUR_EMAIL = 'suryamvvel@gmail.com';
 
 const SOCIALS = [
@@ -40,6 +50,7 @@ interface ContactSectionProps {
 }
 
 export function ContactSection({ onBack }: ContactSectionProps) {
+  const isMobile = useIsMobile();
   const [email, setEmail] = useState('');
   const [message, setMessage] = useState('');
 
@@ -78,8 +89,9 @@ export function ContactSection({ onBack }: ContactSectionProps) {
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
-        justifyContent: 'center',
-        padding: '2rem',
+        justifyContent: isMobile ? 'flex-start' : 'center',
+        padding: isMobile ? '5rem 1.5rem 2rem' : '2rem',
+        overflowY: 'auto',
       }}
     >
       {/* Back button */}
@@ -108,11 +120,11 @@ export function ContactSection({ onBack }: ContactSectionProps) {
       <div
         style={{
           display: 'flex',
-          flexDirection: 'row',
-          gap: '5rem',
+          flexDirection: isMobile ? 'column' : 'row',
+          gap: isMobile ? '2rem' : '5rem',
           width: '100%',
           maxWidth: '900px',
-          alignItems: 'flex-start',
+          alignItems: isMobile ? 'stretch' : 'flex-start',
         }}
       >
         {/* Left — title + socials */}

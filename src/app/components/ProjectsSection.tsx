@@ -3,6 +3,16 @@ import { motion, AnimatePresence } from 'motion/react';
 
 const ALGERIAN = "'Algerian', serif";
 
+function useIsMobile() {
+  const [isMobile, setIsMobile] = useState(() => window.innerWidth < 768);
+  useEffect(() => {
+    const handler = () => setIsMobile(window.innerWidth < 768);
+    window.addEventListener('resize', handler);
+    return () => window.removeEventListener('resize', handler);
+  }, []);
+  return isMobile;
+}
+
 const PROJECTS = [
   {
     id: 'threadoku',
@@ -49,6 +59,7 @@ interface ProjectsSectionProps {
 }
 
 export function ProjectsSection({ onBack }: ProjectsSectionProps) {
+  const isMobile = useIsMobile();
   const [summoned, setSummoned] = useState(false);
   const [hoveredId, setHoveredId] = useState<string | null>(null);
 
@@ -142,8 +153,8 @@ export function ProjectsSection({ onBack }: ProjectsSectionProps) {
               transition={{ duration: 0.4, delay: 0.1 }}
               style={{
                 display: 'block',
-                height: 'clamp(320px, 75vh, 700px)',
-                width: 'auto',
+                height: isMobile ? 'auto' : 'clamp(320px, 75vh, 700px)',
+                width: isMobile ? 'min(85vw, 320px)' : 'auto',
                 borderRadius: '8px',
                 boxShadow: '0 8px 32px rgba(0,0,0,0.8)',
                 cursor: 'default',
@@ -160,11 +171,12 @@ export function ProjectsSection({ onBack }: ProjectsSectionProps) {
               display: 'flex',
               flexDirection: 'row',
               alignItems: 'center',
-              justifyContent: 'center',
-              gap: '1.5vw',
-              padding: '0 2vw',
+              justifyContent: isMobile ? 'flex-start' : 'center',
+              gap: isMobile ? '3vw' : '1.5vw',
+              padding: isMobile ? '0 4vw' : '0 2vw',
               width: '100%',
-              overflow: 'visible',
+              overflowX: isMobile ? 'auto' : 'visible',
+              overflowY: 'visible',
             }}
           >
             {PROJECTS.map((project, i) => {
@@ -178,7 +190,7 @@ export function ProjectsSection({ onBack }: ProjectsSectionProps) {
                   onHoverEnd={() => setHoveredId(null)}
                   whileHover={{ scale: 1.05, zIndex: 10 }}
                   style={{
-                    width: 'clamp(160px, 18.5vw, 365px)',
+                    width: isMobile ? 'clamp(100px, 38vw, 200px)' : 'clamp(160px, 18.5vw, 365px)',
                     aspectRatio: '619 / 922',
                     flexShrink: 0,
                     borderRadius: '8px',
