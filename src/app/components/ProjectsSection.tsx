@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 
 const ALGERIAN = "'Algerian', serif";
@@ -159,11 +159,9 @@ export function ProjectsSection({ onBack }: ProjectsSectionProps) {
             }}
           >
             {PROJECTS.map((project, i) => {
-              const imgEl = (
-                <motion.img
+              const card = (
+                <motion.div
                   key={project.id}
-                  src={project.src}
-                  alt={project.alt}
                   initial={{ x: DEAL_X[i], opacity: i === 2 ? 1 : 0 }}
                   animate={{ x: 0, opacity: 1 }}
                   transition={{ duration: 0.5, delay: DEAL_DELAY[i], ease: [0.25, 0.46, 0.45, 0.94] }}
@@ -171,24 +169,30 @@ export function ProjectsSection({ onBack }: ProjectsSectionProps) {
                   onHoverEnd={() => setHoveredId(null)}
                   whileHover={{ scale: 1.05, zIndex: 10 }}
                   style={{
-                    display: 'block',
-                    width: 'clamp(110px, 17vw, 260px)',
-                    height: 'auto',
+                    width: 'clamp(160px, 18.5vw, 365px)',
+                    aspectRatio: '619 / 922',
+                    flexShrink: 0,
                     borderRadius: '8px',
                     boxShadow: '0 8px 32px rgba(0,0,0,0.8)',
                     cursor: project.link ? 'pointer' : 'default',
-                    flexShrink: 0,
                     transformOrigin: i === 0 ? 'left center' : i === 4 ? 'right center' : 'center center',
+                    overflow: 'hidden',
                   }}
-                />
+                >
+                  <img
+                    src={project.src}
+                    alt={project.alt}
+                    style={{ width: '100%', height: '100%', objectFit: 'contain', display: 'block' }}
+                  />
+                </motion.div>
               );
 
               return project.link ? (
                 <a key={project.id} href={project.link} target="_blank" rel="noopener noreferrer">
-                  {imgEl}
+                  {card}
                 </a>
               ) : (
-                <div key={project.id}>{imgEl}</div>
+                <React.Fragment key={project.id}>{card}</React.Fragment>
               );
             })}
           </motion.div>
