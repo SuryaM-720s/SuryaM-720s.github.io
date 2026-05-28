@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
-import { motion, AnimatePresence, useInView } from 'motion/react';
+import { motion, AnimatePresence } from 'motion/react';
 import { ProjectsSection } from './ProjectsSection';
 import { ResumeSection } from './ResumeSection';
 import { ContactSection } from './ContactSection';
@@ -56,7 +56,6 @@ type FlipPhase = 'idle' | 'collapsing' | 'collapsed' | 'expanding';
 
 export function HomeSection() {
   const sectionRef = useRef<HTMLElement>(null);
-  const sectionInView = useInView(sectionRef, { amount: 0.5 });
 
   const [showCard, setShowCard] = useState(false);
   const [showProjects, setShowProjects] = useState(false);
@@ -77,7 +76,9 @@ export function HomeSection() {
   }, [phase, fetchedSrc]);
 
   const handleCardClick = () => {
-    if (!sectionInView) {
+    const rect = sectionRef.current?.getBoundingClientRect();
+    const isInView = rect ? rect.top < window.innerHeight * 0.5 : true;
+    if (!isInView) {
       sectionRef.current?.scrollIntoView({ behavior: 'smooth' });
       return;
     }
