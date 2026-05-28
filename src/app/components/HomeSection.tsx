@@ -123,6 +123,7 @@ export function HomeSection() {
           <motion.img
             src={cardSrc}
             alt="card"
+            draggable="false"
             animate={isFlipping ? { y: 0 } : { y: [0, -14, 0] }}
             transition={
               isFlipping
@@ -182,6 +183,7 @@ export function HomeSection() {
             <motion.img
               src="/Intro_card.jpg"
               alt="intro card"
+              draggable="false"
               initial={{ x: '100%' }}
               animate={{ x: 0 }}
               exit={{ x: '100%' }}

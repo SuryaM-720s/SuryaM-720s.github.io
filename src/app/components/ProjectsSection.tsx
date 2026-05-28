@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 
 const ALGERIAN = "'Algerian', serif";
@@ -51,6 +51,14 @@ interface ProjectsSectionProps {
 export function ProjectsSection({ onBack }: ProjectsSectionProps) {
   const [summoned, setSummoned] = useState(false);
   const [hoveredId, setHoveredId] = useState<string | null>(null);
+
+  // Preload all project card images as soon as the section mounts
+  useEffect(() => {
+    PROJECTS.forEach(p => {
+      const img = new Image();
+      img.src = p.src;
+    });
+  }, []);
 
   const hoveredProject = PROJECTS.find(p => p.id === hoveredId);
 
@@ -128,6 +136,7 @@ export function ProjectsSection({ onBack }: ProjectsSectionProps) {
             <motion.img
               src="/style_me.jpg"
               alt="Style.me"
+              draggable="false"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.4, delay: 0.1 }}
@@ -182,6 +191,7 @@ export function ProjectsSection({ onBack }: ProjectsSectionProps) {
                   <img
                     src={project.src}
                     alt={project.alt}
+                    draggable="false"
                     style={{ width: '100%', height: '100%', objectFit: 'contain', display: 'block' }}
                   />
                 </motion.div>
