@@ -172,8 +172,8 @@ export function ProjectsSection({ onBack }: ProjectsSectionProps) {
                   whileHover={{ scale: 1.05, zIndex: 10 }}
                   style={{
                     display: 'block',
-                    height: 'clamp(320px, 75vh, 700px)',
-                    width: 'auto',
+                    width: 'clamp(110px, 17vw, 260px)',
+                    height: 'auto',
                     borderRadius: '8px',
                     boxShadow: '0 8px 32px rgba(0,0,0,0.8)',
                     cursor: project.link ? 'pointer' : 'default',
