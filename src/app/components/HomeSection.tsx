@@ -118,14 +118,18 @@ export function HomeSection() {
           width: '100vw',
           background: '#000',
           display: 'flex',
-          alignItems: 'stretch',
+          flexDirection: isMobile ? 'column' : 'row',
+          alignItems: isMobile ? 'center' : 'stretch',
+          justifyContent: isMobile ? 'center' : undefined,
+          gap: isMobile ? '1rem' : undefined,
           overflow: 'hidden',
+          position: 'relative',
           scrollSnapAlign: 'start',
         }}
       >
-        {/* Card — hidden on mobile */}
+        {/* Card — top on mobile, left on desktop */}
         <motion.div
-          style={{ flexShrink: 0, display: isMobile ? 'none' : 'flex', cursor: 'pointer' }}
+          style={{ flexShrink: 0, display: 'flex', cursor: 'pointer' }}
           animate={{ scaleX: phase === 'collapsing' || phase === 'collapsed' ? 0 : 1 }}
           transition={{ duration: 0.22, ease: phase === 'collapsing' ? 'easeIn' : 'easeOut' }}
           onAnimationComplete={handleAnimationComplete}
@@ -141,19 +145,23 @@ export function HomeSection() {
                 ? { duration: 0.1 }
                 : { repeat: Infinity, duration: 3, ease: 'easeInOut' }
             }
-            style={{ height: '100vh', width: 'auto', display: 'block' }}
+            style={{
+              height: isMobile ? 'clamp(220px, 42vh, 380px)' : '100vh',
+              width: 'auto',
+              display: 'block',
+            }}
           />
         </motion.div>
 
         {/* Nav */}
         <div
           style={{
-            flex: 1,
+            flex: isMobile ? undefined : 1,
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
             justifyContent: 'center',
-            gap: '2.5rem',
+            gap: isMobile ? '1.2rem' : '2.5rem',
           }}
         >
           {NAV_ITEMS.map((item, i) => (
@@ -172,7 +180,7 @@ export function HomeSection() {
               whileHover={{ scale: 1.35, color: '#FFD700', transition: { type: 'spring', stiffness: 600, damping: 20 } }}
               style={{
                 fontFamily: ALGERIAN,
-                fontSize: isMobile ? 'clamp(1.6rem, 7vw, 2.4rem)' : 'clamp(1.2rem, 2.5vw, 2rem)',
+                fontSize: isMobile ? 'clamp(1.4rem, 6vw, 2rem)' : 'clamp(1.2rem, 2.5vw, 2rem)',
                 color: '#fff',
                 background: 'none',
                 border: 'none',
@@ -187,7 +195,7 @@ export function HomeSection() {
           ))}
         </div>
 
-        {/* Intro card — hidden on mobile */}
+        {/* Desktop intro card — slides from right */}
         <AnimatePresence>
           {showCard && !isMobile && (
             <motion.img
@@ -200,6 +208,40 @@ export function HomeSection() {
               transition={{ duration: 0.7, ease: 'easeOut' }}
               style={{ height: '100vh', width: 'auto', display: 'block', flexShrink: 0 }}
             />
+          )}
+        </AnimatePresence>
+
+        {/* Mobile intro card — centered overlay, tap to dismiss */}
+        <AnimatePresence>
+          {showCard && isMobile && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.3 }}
+              onClick={() => setShowCard(false)}
+              style={{
+                position: 'absolute',
+                inset: 0,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                background: 'rgba(0,0,0,0.8)',
+                zIndex: 5,
+                cursor: 'pointer',
+              }}
+            >
+              <motion.img
+                src="/Intro_card.jpg"
+                alt="intro card"
+                draggable="false"
+                initial={{ scale: 0.85 }}
+                animate={{ scale: 1 }}
+                exit={{ scale: 0.85 }}
+                transition={{ duration: 0.4, ease: 'easeOut' }}
+                style={{ height: 'min(72vh, 520px)', width: 'auto', display: 'block' }}
+              />
+            </motion.div>
           )}
         </AnimatePresence>
       </section>
